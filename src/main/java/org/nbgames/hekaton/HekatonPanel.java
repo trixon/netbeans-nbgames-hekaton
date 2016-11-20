@@ -15,9 +15,12 @@
  */
 package org.nbgames.hekaton;
 
+import java.awt.BorderLayout;
 import java.util.Observable;
 import java.util.Observer;
 import org.nbgames.core.api.ui.GamePanel;
+import org.nbgames.core.dice.DiceBoard;
+import org.nbgames.hekaton.ScoreCardObservable.ScoreCardEvent;
 
 /**
  *
@@ -25,8 +28,11 @@ import org.nbgames.core.api.ui.GamePanel;
  */
 public class HekatonPanel extends GamePanel implements Observer {
 
+    private DiceBoard mDiceBoard;
+    private ScoreCard mScoreCard;
+
     /**
-     * Creates new form HekatonGamePanel
+     * Creates new form HekatonPanel
      */
     public HekatonPanel() {
         initComponents();
@@ -34,10 +40,60 @@ public class HekatonPanel extends GamePanel implements Observer {
 
     @Override
     public void newGame() {
+        initGame();
+        mScoreCard.newGame();
+        mDiceBoard.newTurn();
     }
 
     @Override
     public void update(Observable o, Object arg) {
+        if (arg instanceof DiceBoard.RollEvent) {
+            switch ((DiceBoard.RollEvent) arg) {
+                case PRE_ROLL:
+//                    mScoreCard.setEnabledUndo(false);
+//                    mRollable = mScoreCard.isRollable();
+//                    if (mRollable) {
+//                        mScoreCard.newRoll();
+                    mDiceBoard.roll();
+//                    }
+
+                    break;
+
+                case POST_ROLL:
+//                    mScoreCard.parseDice(mDiceBoard.getValues());
+                    break;
+            }
+        }
+
+        if (arg instanceof ScoreCardEvent) {
+            switch ((ScoreCardEvent) arg) {
+                case GAME_OVER:
+                    mDiceBoard.gameOver();
+                    break;
+
+                case REGISTER:
+                    mDiceBoard.newTurn();
+                    break;
+
+                case UNDO:
+                    mDiceBoard.undo();
+                    break;
+            }
+        }
+    }
+
+    private void initGame() {
+        removeAll();
+
+        mScoreCard = new ScoreCard();
+        mScoreCard.getObservable().addObserver(this);
+        add(mScoreCard, BorderLayout.CENTER);
+
+        mDiceBoard = new DiceBoard(1);
+        mDiceBoard.addObserver(this);
+        mDiceBoard.setDiceTofloor(1000);
+        mDiceBoard.setMaxRollCount(50);
+        add(mDiceBoard.getPanel(), BorderLayout.SOUTH);
     }
 
     /**
@@ -49,16 +105,7 @@ public class HekatonPanel extends GamePanel implements Observer {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

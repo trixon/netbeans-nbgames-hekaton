@@ -23,6 +23,8 @@ import org.nbgames.core.api.ui.NewGamePanel;
  */
 public class HekatonNewGamePanel extends NewGamePanel {
 
+    private final Options mOptions = Options.getInstance();
+
     /**
      * Creates new form HekatonNewGamePanel
      */
@@ -32,10 +34,12 @@ public class HekatonNewGamePanel extends NewGamePanel {
 
     @Override
     public void load() {
+        selectPlayersPanel.setNumOfPlayers(mOptions.getNumOfPlayers());
     }
 
     @Override
     public void save() {
+        mOptions.setNumOfPlayers(selectPlayersPanel.getNumOfPlayers());
     }
 
     /**
@@ -47,18 +51,29 @@ public class HekatonNewGamePanel extends NewGamePanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        selectPlayersPanel = new org.nbgames.core.api.ui.SelectPlayersPanel();
+
+        selectPlayersPanel.setMaxNumOfPlayers(6);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(selectPlayersPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(selectPlayersPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.nbgames.core.api.ui.SelectPlayersPanel selectPlayersPanel;
     // End of variables declaration//GEN-END:variables
 }
