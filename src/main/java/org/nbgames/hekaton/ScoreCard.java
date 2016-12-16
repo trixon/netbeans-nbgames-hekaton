@@ -38,7 +38,7 @@ public class ScoreCard extends javax.swing.JPanel {
      */
     public ScoreCard() {
         initComponents();
-        holdButton.setIcon(MaterialIcon._Av.STOP.get(Almond.ICON_LARGE * 2, mIconColor));
+        holdButton.setIcon(MaterialIcon._Action.LOCK.get(Almond.ICON_LARGE * 2, mIconColor));
     }
 
     /**
@@ -76,7 +76,7 @@ public class ScoreCard extends javax.swing.JPanel {
         mPlayerPanels = new PlayerPanel[numOfPlayers];
         Dimension d = new Dimension(128, 196);
         for (int i = 0; i < numOfPlayers; i++) {
-            mPlayerPanels[i] = new PlayerPanel();
+            mPlayerPanels[i] = new PlayerPanel(mOptions.getPlayers()[i]);
             mPlayerPanels[i].setPreferredSize(d);
             holderPanel.add(mPlayerPanels[i]);
         }

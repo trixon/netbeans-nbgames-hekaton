@@ -15,6 +15,8 @@
  */
 package org.nbgames.hekaton;
 
+import org.nbgames.core.api.Player;
+
 /**
  *
  * @author Patrik Karlsson
@@ -24,8 +26,9 @@ public class PlayerPanel extends javax.swing.JPanel {
     /**
      * Creates new form PlayerPanel
      */
-    public PlayerPanel() {
+    public PlayerPanel(Player player) {
         initComponents();
+        nameLabel.setText(player.getName());
     }
 
     /**
@@ -47,7 +50,7 @@ public class PlayerPanel extends javax.swing.JPanel {
 
         nameLabel.setFont(nameLabel.getFont().deriveFont((nameLabel.getFont().getStyle() | java.awt.Font.ITALIC) | java.awt.Font.BOLD, nameLabel.getFont().getSize()+6));
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        nameLabel.setText(org.openide.util.NbBundle.getMessage(PlayerPanel.class, "PlayerPanel.nameLabel.text")); // NOI18N
+        nameLabel.setText("name"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -56,7 +59,7 @@ public class PlayerPanel extends javax.swing.JPanel {
         textField.setEditable(false);
         textField.setFont(textField.getFont().deriveFont(textField.getFont().getStyle() | java.awt.Font.BOLD, textField.getFont().getSize()+8));
         textField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        textField.setText(org.openide.util.NbBundle.getMessage(PlayerPanel.class, "PlayerPanel.textField.text")); // NOI18N
+        textField.setText("0"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;

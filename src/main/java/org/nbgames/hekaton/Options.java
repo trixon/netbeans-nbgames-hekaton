@@ -17,12 +17,13 @@ package org.nbgames.hekaton;
 
 import java.awt.Color;
 import java.util.prefs.Preferences;
+import org.nbgames.core.api.Player;
 import org.openide.util.NbPreferences;
 import se.trixon.almond.util.GraphicsHelper;
 
 /**
  *
- * @author Patrik Karlsson <patrik@trixon.se>
+ * @author Patrik Karlsson
  */
 public class Options {
 
@@ -34,6 +35,7 @@ public class Options {
     private static final int DEFAULT_NUM_OF_PLAYERS = 2;
 
     private static final Preferences mPreferences = NbPreferences.forModule(Options.class);
+    private Player[] mPlayers;
     private final Preferences mPreferencesColors = NbPreferences.forModule(getClass()).node("colors");
 
     public static Options getInstance() {
@@ -46,6 +48,14 @@ public class Options {
 
     private Options() {
         init();
+    }
+
+    public void setPlayers(Player[] players) {
+        mPlayers = players;
+    }
+
+    public Player[] getPlayers() {
+        return mPlayers;
     }
 
     public Color getColor(ColorItem colorItem) {

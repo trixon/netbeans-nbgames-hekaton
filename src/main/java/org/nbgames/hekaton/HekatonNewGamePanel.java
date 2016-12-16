@@ -35,11 +35,14 @@ public class HekatonNewGamePanel extends NewGamePanel {
     @Override
     public void load() {
         selectPlayersPanel.setNumOfPlayers(mOptions.getNumOfPlayers());
+        selectPlayersPanel.restoreSelection(getClass());
     }
 
     @Override
     public void save() {
         mOptions.setNumOfPlayers(selectPlayersPanel.getNumOfPlayers());
+        selectPlayersPanel.saveSelection(getClass());
+        mOptions.setPlayers(selectPlayersPanel.getPlayers());
     }
 
     /**
