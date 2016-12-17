@@ -23,12 +23,65 @@ import org.nbgames.core.api.Player;
  */
 public class PlayerPanel extends javax.swing.JPanel {
 
+    private final Player mPlayer;
+    private int mScoreCurrent;
+    private int mScoreLocked;
+    private int mThrowsCurrent;
+    private int mThrowsTotal;
+
     /**
      * Creates new form PlayerPanel
      */
     public PlayerPanel(Player player) {
         initComponents();
         nameLabel.setText(player.getName());
+        mPlayer = player;
+        reset();
+    }
+
+    public void incNumOfRolls() {
+        mThrowsCurrent++;
+        mThrowsTotal++;
+        updateIndicators();
+    }
+
+    private void updateIndicators() {
+        String current = mThrowsCurrent == 0 ? "-" : String.valueOf(mThrowsCurrent);
+        String total = mThrowsTotal == 0 ? "-" : String.valueOf(mThrowsTotal);
+        statusLabel.setText(String.format("%s/%s", current, total));
+    }
+
+    public Player getPlayer() {
+        return mPlayer;
+    }
+
+    int getScore() {
+        return mScoreCurrent;
+    }
+
+    void addScore(int score) {
+        mScoreCurrent += score;
+        textField.setText(String.format("%d (%d)", mScoreCurrent, mScoreLocked));
+    }
+
+    void hold() {
+        mScoreLocked = mScoreCurrent;
+        textField.setText(String.valueOf(mScoreCurrent));
+    }
+
+    void setActive(boolean b) {
+        indicatorPanel.setOpaque(b);
+        mThrowsCurrent = 0;
+        updateIndicators();
+    }
+
+    void reset() {
+        mScoreCurrent = 0;
+        mScoreLocked = 0;
+        mThrowsCurrent = 0;
+        mThrowsTotal = 0;
+
+        updateIndicators();
     }
 
     /**
@@ -44,6 +97,7 @@ public class PlayerPanel extends javax.swing.JPanel {
         nameLabel = new javax.swing.JLabel();
         textField = new javax.swing.JTextField();
         statusLabel = new javax.swing.JLabel();
+        indicatorPanel = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         setLayout(new java.awt.GridBagLayout());
@@ -78,11 +132,25 @@ public class PlayerPanel extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(statusLabel, gridBagConstraints);
+
+        indicatorPanel.setBackground(new java.awt.Color(255, 0, 0));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(16, 0, 0, 0);
+        add(indicatorPanel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel indicatorPanel;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JTextField textField;
     // End of variables declaration//GEN-END:variables
+
+    void stop() {
+        mScoreCurrent = mScoreLocked;
+        textField.setText(String.valueOf(mScoreCurrent));
+    }
 }

@@ -18,9 +18,11 @@ package org.nbgames.hekaton;
 import java.awt.BorderLayout;
 import java.util.Observable;
 import java.util.Observer;
+import org.nbgames.core.api.DictNbg;
 import org.nbgames.core.api.ui.GamePanel;
 import org.nbgames.core.dice.DiceBoard;
 import org.nbgames.hekaton.ScoreCardObservable.ScoreCardEvent;
+import se.trixon.almond.nbp.dialogs.NbMessage;
 
 /**
  *
@@ -50,17 +52,15 @@ public class HekatonPanel extends GamePanel implements Observer {
         if (arg instanceof DiceBoard.RollEvent) {
             switch ((DiceBoard.RollEvent) arg) {
                 case PRE_ROLL:
-//                    mScoreCard.setEnabledUndo(false);
-//                    mRollable = mScoreCard.isRollable();
-//                    if (mRollable) {
-//                        mScoreCard.newRoll();
-                    mDiceBoard.roll();
-//                    }
-
+                    if (mDiceBoard.getNumOfDice() == mDiceBoard.getNumOfSelectedDice()) {
+                        mScoreCard.setEnabledLock(false);
+                        mScoreCard.newRoll();
+                        mDiceBoard.roll();
+                    }
                     break;
 
                 case POST_ROLL:
-//                    mScoreCard.parseDice(mDiceBoard.getValues());
+                    mScoreCard.parseDice(mDiceBoard.getValues());
                     break;
             }
         }
@@ -69,14 +69,16 @@ public class HekatonPanel extends GamePanel implements Observer {
             switch ((ScoreCardEvent) arg) {
                 case GAME_OVER:
                     mDiceBoard.gameOver();
+                    NbMessage.information(DictNbg.GAME_OVER.toString(), "it's over");
                     break;
 
-                case REGISTER:
+                case HOLD:
+                    mDiceBoard.setHandMode(mScoreCard.getHandedness());
                     mDiceBoard.newTurn();
                     break;
 
-                case UNDO:
-                    mDiceBoard.undo();
+                case STOP:
+                    mDiceBoard.setHandMode(mScoreCard.getHandedness());
                     break;
             }
         }
@@ -89,10 +91,10 @@ public class HekatonPanel extends GamePanel implements Observer {
         mScoreCard.getObservable().addObserver(this);
         add(mScoreCard, BorderLayout.CENTER);
 
-        mDiceBoard = new DiceBoard(1);
+        mDiceBoard = new DiceBoard(2);
         mDiceBoard.addObserver(this);
         mDiceBoard.setDiceTofloor(1000);
-        mDiceBoard.setMaxRollCount(50);
+        mDiceBoard.setMaxRollCount(999);
         add(mDiceBoard.getPanel(), BorderLayout.SOUTH);
     }
 

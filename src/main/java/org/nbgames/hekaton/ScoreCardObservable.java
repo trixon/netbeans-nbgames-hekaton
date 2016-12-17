@@ -30,6 +30,6 @@ public class ScoreCardObservable extends Observable {
 
     public enum ScoreCardEvent {
 
-        GAME_OVER, REGISTER, UNDO
+        GAME_OVER, HOLD, STOP
     }
 }

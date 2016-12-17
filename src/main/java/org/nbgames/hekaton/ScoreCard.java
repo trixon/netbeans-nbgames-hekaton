@@ -16,9 +16,13 @@
 package org.nbgames.hekaton;
 
 import java.awt.Dimension;
+import java.util.LinkedList;
 import org.nbgames.core.api.DictNbg;
 import org.nbgames.core.api.NbGames;
+import org.nbgames.core.api.Player.Handedness;
+import org.nbgames.hekaton.ScoreCardObservable.ScoreCardEvent;
 import se.trixon.almond.nbp.Almond;
+import se.trixon.almond.util.CircularInt;
 import se.trixon.almond.util.icons.IconColor;
 import se.trixon.almond.util.icons.material.MaterialIcon;
 
@@ -32,6 +36,8 @@ public class ScoreCard extends javax.swing.JPanel {
     private final Options mOptions = Options.getInstance();
     private PlayerPanel[] mPlayerPanels;
     private final IconColor mIconColor = NbGames.getAlmondOptions().getIconColor();
+    private CircularInt mCurrentPlayer;
+    private int mActivePlayer;
 
     /**
      * Creates new form ScoreCard
@@ -39,6 +45,72 @@ public class ScoreCard extends javax.swing.JPanel {
     public ScoreCard() {
         initComponents();
         holdButton.setIcon(MaterialIcon._Action.LOCK.get(Almond.ICON_LARGE * 2, mIconColor));
+    }
+
+    public ScoreCardObservable getObservable() {
+        return mObservable;
+    }
+
+    Handedness getHandedness() {
+        return mPlayerPanels[mActivePlayer].getPlayer().getHandedness();
+    }
+
+    void newGame() {
+        holderPanel.removeAll();
+        int numOfPlayers = mOptions.getNumOfPlayers();
+        mPlayerPanels = new PlayerPanel[numOfPlayers];
+        mCurrentPlayer = new CircularInt(0, numOfPlayers - 1);
+        Dimension d = new Dimension(128, 196);
+
+        for (int i = 0; i < numOfPlayers; i++) {
+            mPlayerPanels[i] = new PlayerPanel(mOptions.getPlayers()[i]);
+            mPlayerPanels[i].setPreferredSize(d);
+            mPlayerPanels[i].setActive(i == 0);
+            holderPanel.add(mPlayerPanels[i]);
+        }
+
+        holdButton.setEnabled(false);
+    }
+
+    void newRoll() {
+        //mPlayers.get(mActivePlayer).clearPreview();
+    }
+
+    void parseDice(LinkedList<Integer> values) {
+        setEnabledLock(true);
+        PlayerPanel playerPanel = mPlayerPanels[mActivePlayer];
+        playerPanel.incNumOfRolls();
+
+        int score = 0;
+        boolean stop = false;
+        for (Integer value : values) {
+            score += value;
+            stop = stop || value == 1;
+        }
+
+        if (stop) {
+            playerPanel.stop();
+            activateNextPlayer();
+            mObservable.notify(ScoreCardEvent.STOP);
+        } else {
+            playerPanel.addScore(score);
+            if (playerPanel.getScore() >= 100) {
+                mObservable.notify(ScoreCardEvent.GAME_OVER);
+            }
+        }
+    }
+
+    void setEnabledLock(boolean b) {
+        holdButton.setEnabled(b);
+    }
+
+    private void activateNextPlayer() {
+        mPlayerPanels[mActivePlayer].setActive(false);
+        mActivePlayer = mCurrentPlayer.inc();
+        mPlayerPanels[mActivePlayer].setActive(true);
+        holdButton.setEnabled(false);
+        repaint();
+        revalidate();
     }
 
     /**
@@ -56,31 +128,27 @@ public class ScoreCard extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        holderPanel.setLayout(new java.awt.GridLayout());
+        holderPanel.setLayout(new java.awt.GridLayout(1, 0));
         add(holderPanel, new java.awt.GridBagConstraints());
 
         holdButton.setToolTipText(DictNbg.HOLD.toString());
+        holdButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                holdButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(24, 0, 0, 0);
         add(holdButton, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    public ScoreCardObservable getObservable() {
-        return mObservable;
-    }
 
-    void newGame() {
-        holderPanel.removeAll();
-        int numOfPlayers = mOptions.getNumOfPlayers();
-        mPlayerPanels = new PlayerPanel[numOfPlayers];
-        Dimension d = new Dimension(128, 196);
-        for (int i = 0; i < numOfPlayers; i++) {
-            mPlayerPanels[i] = new PlayerPanel(mOptions.getPlayers()[i]);
-            mPlayerPanels[i].setPreferredSize(d);
-            holderPanel.add(mPlayerPanels[i]);
-        }
-    }
+    private void holdButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_holdButtonActionPerformed
+        mPlayerPanels[mActivePlayer].hold();
+        activateNextPlayer();
+        mObservable.notify(ScoreCardEvent.HOLD);
+    }//GEN-LAST:event_holdButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton holdButton;
