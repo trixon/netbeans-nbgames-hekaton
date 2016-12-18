@@ -51,7 +51,7 @@ public class Hekaton extends GameController implements DiceGameProvider {
 
     @Override
     public String getHelp() {
-        return null;
+        return getHelp(Hekaton.class);
     }
 
     @Override
