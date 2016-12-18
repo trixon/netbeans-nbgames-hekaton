@@ -60,7 +60,13 @@ public class PlayerPanel extends javax.swing.JPanel {
     }
 
     void addScore(int score) {
-        mScoreCurrent += score;
+        if (score == 0) {
+            mScoreCurrent = 0;
+            mScoreLocked = 0;
+        } else {
+            mScoreCurrent += score;
+        }
+
         textField.setText(String.format("%d (%d)", mScoreCurrent, mScoreLocked));
     }
 
@@ -82,6 +88,13 @@ public class PlayerPanel extends javax.swing.JPanel {
         mThrowsTotal = 0;
 
         updateIndicators();
+    }
+
+    void stop(boolean resetToLocked) {
+        if (resetToLocked) {
+            mScoreCurrent = mScoreLocked;
+        }
+        textField.setText(String.valueOf(mScoreCurrent));
     }
 
     /**
@@ -148,9 +161,4 @@ public class PlayerPanel extends javax.swing.JPanel {
     private javax.swing.JLabel statusLabel;
     private javax.swing.JTextField textField;
     // End of variables declaration//GEN-END:variables
-
-    void stop() {
-        mScoreCurrent = mScoreLocked;
-        textField.setText(String.valueOf(mScoreCurrent));
-    }
 }

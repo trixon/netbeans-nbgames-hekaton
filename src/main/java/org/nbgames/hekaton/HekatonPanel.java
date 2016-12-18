@@ -32,6 +32,7 @@ public class HekatonPanel extends GamePanel implements Observer {
 
     private DiceBoard mDiceBoard;
     private ScoreCard mScoreCard;
+    private final Options mOptions = Options.getInstance();
 
     /**
      * Creates new form HekatonPanel
@@ -45,6 +46,7 @@ public class HekatonPanel extends GamePanel implements Observer {
         initGame();
         mScoreCard.newGame();
         mDiceBoard.newTurn();
+        mDiceBoard.setHandMode(mScoreCard.getHandedness());
     }
 
     @Override
@@ -53,7 +55,7 @@ public class HekatonPanel extends GamePanel implements Observer {
             switch ((DiceBoard.RollEvent) arg) {
                 case PRE_ROLL:
                     if (mDiceBoard.getNumOfDice() == mDiceBoard.getNumOfSelectedDice()) {
-                        mScoreCard.setEnabledLock(false);
+                        mScoreCard.setEnabledHold(false);
                         mScoreCard.newRoll();
                         mDiceBoard.roll();
                     }
@@ -91,10 +93,11 @@ public class HekatonPanel extends GamePanel implements Observer {
         mScoreCard.getObservable().addObserver(this);
         add(mScoreCard, BorderLayout.CENTER);
 
-        mDiceBoard = new DiceBoard(2);
+        mDiceBoard = new DiceBoard(mOptions.isTwoDice() ? 2 : 1);
         mDiceBoard.addObserver(this);
         mDiceBoard.setDiceTofloor(1000);
         mDiceBoard.setMaxRollCount(999);
+
         add(mDiceBoard.getPanel(), BorderLayout.SOUTH);
     }
 

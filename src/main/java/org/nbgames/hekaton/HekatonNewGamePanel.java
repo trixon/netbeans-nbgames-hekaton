@@ -15,6 +15,7 @@
  */
 package org.nbgames.hekaton;
 
+import org.nbgames.core.api.DictNbg;
 import org.nbgames.core.api.ui.NewGamePanel;
 
 /**
@@ -36,6 +37,9 @@ public class HekatonNewGamePanel extends NewGamePanel {
     public void load() {
         selectPlayersPanel.setNumOfPlayers(mOptions.getNumOfPlayers());
         selectPlayersPanel.restoreSelection(getClass());
+        goalSpinner.setValue(mOptions.getGoal());
+        twoDiceCheckBox.setSelected(mOptions.isTwoDice());
+        bigPigCheckBox.setSelected(mOptions.isBigPig());
     }
 
     @Override
@@ -43,6 +47,9 @@ public class HekatonNewGamePanel extends NewGamePanel {
         mOptions.setNumOfPlayers(selectPlayersPanel.getNumOfPlayers());
         selectPlayersPanel.saveSelection(getClass());
         mOptions.setPlayers(selectPlayersPanel.getPlayers());
+        mOptions.setGoal((Integer) goalSpinner.getValue());
+        mOptions.setTwoDice(twoDiceCheckBox.isSelected());
+        mOptions.setBigPig(bigPigCheckBox.isSelected());
     }
 
     /**
@@ -53,8 +60,29 @@ public class HekatonNewGamePanel extends NewGamePanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
+        variantLabel = new javax.swing.JLabel();
+        goalLabel = new javax.swing.JLabel();
+        goalSpinner = new javax.swing.JSpinner();
+        twoDiceCheckBox = new javax.swing.JCheckBox();
+        bigPigCheckBox = new javax.swing.JCheckBox();
         selectPlayersPanel = new org.nbgames.core.api.ui.SelectPlayersPanel();
+
+        variantLabel.setFont(variantLabel.getFont().deriveFont(variantLabel.getFont().getStyle() | java.awt.Font.BOLD, variantLabel.getFont().getSize()+4));
+        variantLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        variantLabel.setText(DictNbg.VARIANT.toString());
+
+        goalLabel.setText(DictNbg.GOAL.toString());
+
+        goalSpinner.setModel(new javax.swing.SpinnerNumberModel(100, 10, 1000, 1));
+
+        twoDiceCheckBox.setText(org.openide.util.NbBundle.getMessage(HekatonNewGamePanel.class, "HekatonNewGamePanel.twoDiceCheckBox.text")); // NOI18N
+
+        bigPigCheckBox.setText(org.openide.util.NbBundle.getMessage(HekatonNewGamePanel.class, "HekatonNewGamePanel.bigPigCheckBox.text")); // NOI18N
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, twoDiceCheckBox, org.jdesktop.beansbinding.ELProperty.create("${selected}"), bigPigCheckBox, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
 
         selectPlayersPanel.setMaxNumOfPlayers(6);
 
@@ -64,19 +92,48 @@ public class HekatonNewGamePanel extends NewGamePanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(selectPlayersPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(selectPlayersPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+                    .addComponent(variantLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(goalLabel)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(goalSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(twoDiceCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bigPigCheckBox)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(variantLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(goalLabel)
+                .addGap(1, 1, 1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(goalSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(twoDiceCheckBox)
+                    .addComponent(bigPigCheckBox))
+                .addGap(18, 18, 18)
                 .addComponent(selectPlayersPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox bigPigCheckBox;
+    private javax.swing.JLabel goalLabel;
+    private javax.swing.JSpinner goalSpinner;
     private org.nbgames.core.api.ui.SelectPlayersPanel selectPlayersPanel;
+    private javax.swing.JCheckBox twoDiceCheckBox;
+    private javax.swing.JLabel variantLabel;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

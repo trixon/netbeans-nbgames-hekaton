@@ -77,30 +77,54 @@ public class ScoreCard extends javax.swing.JPanel {
     }
 
     void parseDice(LinkedList<Integer> values) {
-        setEnabledLock(true);
+        setEnabledHold(true);
         PlayerPanel playerPanel = mPlayerPanels[mActivePlayer];
         playerPanel.incNumOfRolls();
 
-        int score = 0;
+        boolean twoDice = mOptions.isTwoDice() && !mOptions.isBigPig();
+        boolean bigPig = mOptions.isBigPig() && mOptions.isTwoDice();
+        boolean pair = values.getFirst().intValue() == values.getLast().intValue() && (twoDice || bigPig);
         boolean stop = false;
+        int score = 0;
+
+//        System.out.println("");
+//        for (Integer value : values) {
+//            System.out.println("val=" + value);
+//        }
+//        System.out.println("two: " + twoDice);
+//        System.out.println("big: " + bigPig);
+//        System.out.println("pair: " + pair);
         for (Integer value : values) {
             score += value;
             stop = stop || value == 1;
         }
-
+//        System.out.println("stop: " + stop);
         if (stop) {
-            playerPanel.stop();
+            if (pair) {
+                int pairScore = twoDice ? 0 : 25;
+                playerPanel.addScore(pairScore);
+            }
+            playerPanel.stop(!pair);
             activateNextPlayer();
             mObservable.notify(ScoreCardEvent.STOP);
         } else {
-            playerPanel.addScore(score);
-            if (playerPanel.getScore() >= 100) {
-                mObservable.notify(ScoreCardEvent.GAME_OVER);
+            if (pair && twoDice) {
+                holdButton.setEnabled(false);
             }
+
+            if (bigPig && pair && !stop) {
+                score *= 2;
+            }
+
+            playerPanel.addScore(score);
+        }
+        if (playerPanel.getScore() >= mOptions.getGoal()) {
+            setEnabledHold(false);
+            mObservable.notify(ScoreCardEvent.GAME_OVER);
         }
     }
 
-    void setEnabledLock(boolean b) {
+    void setEnabledHold(boolean b) {
         holdButton.setEnabled(b);
     }
 
