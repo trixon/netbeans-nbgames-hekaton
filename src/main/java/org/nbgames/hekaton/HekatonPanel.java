@@ -18,11 +18,11 @@ package org.nbgames.hekaton;
 import java.awt.BorderLayout;
 import java.util.Observable;
 import java.util.Observer;
-import org.nbgames.core.api.DictNbg;
+import org.nbgames.core.api.GameController;
+import org.nbgames.core.api.ui.GameOverDialog;
 import org.nbgames.core.api.ui.GamePanel;
 import org.nbgames.core.dice.DiceBoard;
 import org.nbgames.hekaton.ScoreCardObservable.ScoreCardEvent;
-import se.trixon.almond.nbp.dialogs.NbMessage;
 
 /**
  *
@@ -31,14 +31,16 @@ import se.trixon.almond.nbp.dialogs.NbMessage;
 public class HekatonPanel extends GamePanel implements Observer {
 
     private DiceBoard mDiceBoard;
+    private final GameController mGameController;
     private ScoreCard mScoreCard;
     private final Options mOptions = Options.getInstance();
 
     /**
      * Creates new form HekatonPanel
      */
-    public HekatonPanel() {
+    public HekatonPanel(GameController gameController) {
         initComponents();
+        mGameController = gameController;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class HekatonPanel extends GamePanel implements Observer {
             switch ((ScoreCardEvent) arg) {
                 case GAME_OVER:
                     mDiceBoard.gameOver();
-                    NbMessage.information(DictNbg.GAME_OVER.toString(), "it's over");
+                    GameOverDialog.getInstance().display(mGameController, mScoreCard.getGameOverItems());
                     break;
 
                 case HOLD:

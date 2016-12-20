@@ -75,7 +75,7 @@ public class Hekaton extends GameController implements DiceGameProvider {
     @Override
     public GamePanel getPanel() {
         if (mGamePanel == null) {
-            mGamePanel = new HekatonPanel();
+            mGamePanel = new HekatonPanel(this);
         }
 
         return mGamePanel;

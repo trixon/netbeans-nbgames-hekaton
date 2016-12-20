@@ -75,7 +75,7 @@ public class HekatonNewGamePanel extends NewGamePanel {
 
         goalLabel.setText(DictNbg.GOAL.toString());
 
-        goalSpinner.setModel(new javax.swing.SpinnerNumberModel(100, 10, 1000, 1));
+        goalSpinner.setModel(new javax.swing.SpinnerNumberModel(100, 2, 1000, 1));
 
         twoDiceCheckBox.setText(org.openide.util.NbBundle.getMessage(HekatonNewGamePanel.class, "HekatonNewGamePanel.twoDiceCheckBox.text")); // NOI18N
 

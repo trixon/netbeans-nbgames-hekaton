@@ -16,10 +16,12 @@
 package org.nbgames.hekaton;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import org.nbgames.core.api.DictNbg;
 import org.nbgames.core.api.NbGames;
 import org.nbgames.core.api.Player.Handedness;
+import org.nbgames.core.api.ui.GameOverItem;
 import org.nbgames.hekaton.ScoreCardObservable.ScoreCardEvent;
 import se.trixon.almond.nbp.Almond;
 import se.trixon.almond.util.CircularInt;
@@ -49,6 +51,16 @@ public class ScoreCard extends javax.swing.JPanel {
 
     public ScoreCardObservable getObservable() {
         return mObservable;
+    }
+
+    ArrayList<GameOverItem> getGameOverItems() {
+        ArrayList<GameOverItem> gameOverItems = new ArrayList<>();
+
+        for (PlayerPanel playerPanel : mPlayerPanels) {
+            gameOverItems.add(new GameOverItem(playerPanel.getPlayer(), playerPanel.getScore()));
+        }
+
+        return gameOverItems;
     }
 
     Handedness getHandedness() {
