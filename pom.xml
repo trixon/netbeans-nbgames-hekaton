@@ -4,11 +4,11 @@
     <parent>
         <groupId>org.nbgames</groupId>
         <artifactId>nbgames-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.1.0-SNAPSHOT</version>
     </parent>
     <groupId>org.nbgames</groupId>
     <artifactId>dice-hekaton</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>nbm</packaging>
     <build>
         <plugins>
@@ -105,12 +105,12 @@
         <dependency>
             <groupId>org.nbgames</groupId>
             <artifactId>core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.nbgames</groupId>
             <artifactId>nbgames-core-dice</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.1.0-SNAPSHOT</version>
         </dependency>
 
         <!--Trixon-->
