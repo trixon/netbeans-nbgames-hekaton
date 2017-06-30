@@ -19,7 +19,7 @@ import org.nbgames.core.api.GameCategory;
 import org.nbgames.core.api.GameController;
 import org.nbgames.core.api.ui.GamePanel;
 import org.nbgames.core.api.ui.NewGamePanel;
-import org.nbgames.core.api.ui.OptionsPanel;
+import org.nbgames.core.api.ui.NbgOptionsPanel;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
@@ -36,7 +36,7 @@ public class Hekaton extends GameController {
 
     private HekatonPanel mGamePanel;
     private HekatonNewGamePanel mNewGamePanel;
-    private OptionPanel mOptionPanel;
+    private OptionsPanel mOptionPanel;
 
     public Hekaton() {
     }
@@ -61,9 +61,9 @@ public class Hekaton extends GameController {
     }
 
     @Override
-    public OptionsPanel getOptionsPanel() {
+    public NbgOptionsPanel getOptionsPanel() {
         if (mOptionPanel == null) {
-            mOptionPanel = new OptionPanel();
+            mOptionPanel = new OptionsPanel();
         }
 
         return null;//mOptionPanel;

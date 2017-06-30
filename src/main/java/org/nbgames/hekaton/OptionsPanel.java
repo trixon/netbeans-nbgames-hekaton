@@ -15,18 +15,18 @@
  */
 package org.nbgames.hekaton;
 
-import org.nbgames.core.api.ui.OptionsPanel;
+import org.nbgames.core.api.ui.NbgOptionsPanel;
 
 /**
  *
  * @author Patrik Karlsson
  */
-public class OptionPanel extends OptionsPanel {
+public class OptionsPanel extends NbgOptionsPanel {
 
     /**
-     * Creates new form OptionPanel
+     * Creates new form OptionsPanel
      */
-    public OptionPanel() {
+    public OptionsPanel() {
         initComponents();
     }
 
