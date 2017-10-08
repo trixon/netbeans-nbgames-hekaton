@@ -15,7 +15,7 @@
  */
 package org.nbgames.hekaton;
 
-import org.nbgames.core.api.ui.NbgOptionsPanel;
+import org.nbgames.core.api.options.NbgOptionsPanel;
 
 /**
  *
