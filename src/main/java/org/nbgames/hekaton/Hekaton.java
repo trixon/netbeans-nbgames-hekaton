@@ -15,11 +15,12 @@
  */
 package org.nbgames.hekaton;
 
+import java.awt.image.BufferedImage;
 import org.nbgames.core.api.GameCategory;
 import org.nbgames.core.api.GameController;
+import org.nbgames.core.api.options.NbgOptionsPanel;
 import org.nbgames.core.api.ui.GamePanel;
 import org.nbgames.core.api.ui.NewGamePanel;
-import org.nbgames.core.api.options.NbgOptionsPanel;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
@@ -49,6 +50,11 @@ public class Hekaton extends GameController {
     @Override
     public String getHelp() {
         return getHelp(Hekaton.class);
+    }
+
+    @Override
+    public BufferedImage getImage() {
+        return super.getImage();
     }
 
     @Override
